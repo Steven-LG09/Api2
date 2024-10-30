@@ -1,6 +1,7 @@
 import express from "express";
 import { createClient } from "@libsql/client";
 import dotenv from 'dotenv';
+import cors from 'cors';
 
 dotenv.config();
 
@@ -8,6 +9,7 @@ const app = express()
 const port = parseInt(process.env.PORT) || 9000;
 
 app.use(express.json());
+app.use(cors());
 
 const {TURSO_DATABASE_URL,TURSO_AUTH_TOKEN} = process.env;
 
@@ -23,20 +25,20 @@ app.get('/', async(req, res) => {
 })
 
 
-app.get("/users", async(req, res) => {
+app.get("/apartments", async(req, res) => {
     //"Select * from users"
-    const ans = await turso.execute(`SELECT * FROM contacts`);
+    const ans = await turso.execute(`SELECT * FROM apartments`);
     console.log(ans);
     res.json( ans.rows )
 });
 
-app.post("/users", async(req, res) => {
-  const {first_name, last_name, email, phone} = req.body;
+app.post("/apartments_post", async(req, res) => {
+  const {title, description, value, images} = req.body;
 
   try {
     const ans = await turso.execute({
-      sql: `INSERT INTO contacts ( first_name, last_name, email, phone) VALUES (?, ?, ?, ?)`,
-      args: [first_name, last_name, email, phone]
+      sql: `INSERT INTO apartments ( title, description, value, images) VALUES (?, ?, ?, ?)`,
+      args: [title, description, value, images]
     });
     res.json({
         mensaje: "Usuario creado",
@@ -50,13 +52,13 @@ app.post("/users", async(req, res) => {
   }
 })
 
-app.delete("/delete/:id", async (req, res) => {
-  const userId = req.params.id; // Get the user ID from the request parameters
+app.delete("/users/:id", async (req, res) => {
+  const contact_id = req.params.id; // Get the user ID from the request parameters
 
   try {
       // SQL query to delete the user by ID
       const query = `DELETE FROM contacts WHERE contact_id = ?`; // Adjust the table and column names as necessary
-      const result = await turso.execute(query, [userId]);
+      const result = await turso.execute(query, [contact_id]);
       // Check if any rows were affected
       if (result.affectedRows > 0) {
           res.json({

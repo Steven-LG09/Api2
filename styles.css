@@ -1,0 +1,169 @@
+header{
+    text-align: center;
+    background-color: #F5E7B2;
+    font-family: 'Times New Roman', Times, serif;
+    color: #D8A25E;
+    text-shadow: 3px 3px 5px #d1ab7c ;
+    font-size: 40px;
+}
+footer{
+    text-align: center;
+    font-family: 'Times New Roman', Times, serif;
+}
+.body{
+    background-color: #F5E7B2;
+}
+.separador{
+    color: #973131;
+    background-color: #E0A75E;
+    height: 15px;
+}
+.addTitle{
+    text-align: center;
+    background-color: #F5E7B2;
+    font-family: 'Times New Roman', Times, serif;
+    color: #E0A75E;
+    text-shadow: 3px 3px 5px #F9D689 ;
+}
+.line1{
+    display: flex;
+    margin-left: 5%;
+    margin-right: 5%;
+}
+.row1{
+    align-items: center;
+    justify-content: center;
+    display: flex;
+    width: 50%;
+}
+.row2{
+    width: 50%;
+    text-align: center;
+}
+.row1_1{
+    width: 25%;
+}
+.create{
+    width: 50%;
+}
+.textCreate{
+    font-family: 'Times New Roman', Times, serif;
+    color: #973131;
+    font-size: large;
+}
+.box{
+    border-radius: 10px;
+    background-color: whitesmoke;
+    border: 2px solid #E0A75E;
+    color: #973131;
+    font-family: 'Times New Roman', Times, serif;
+    text-align: center;
+    width: 250px;
+}
+.box1{
+    border-radius: 10px;
+    background-color: whitesmoke;
+    border: 2px solid #E0A75E;
+    color: #973131;
+    font-family: 'Times New Roman', Times, serif;
+    text-align: center;
+    width: 500px;
+}
+.space{
+    height: 100px;
+}
+.adds{
+    display: flex;
+    list-style: none;
+    flex-wrap: wrap;
+    justify-content: center;
+}
+.card{
+    padding: 10px;
+    font-family: 'Times New Roman', Times, serif;
+}
+.bCreate{
+    font-family: 'Times New Roman', Times, serif;
+    border-color: #E0A75E;
+    width: 200px;
+    border-radius: 10px;
+    border-width: 0.1px;
+    color: #973131;
+    background-color: whitesmoke;
+    font-size: large;
+    cursor: grabbing;
+    margin-left: 20%;
+}
+.bCreate:hover{
+    box-shadow: 0 12px 16px 0 #d1ab7c, 0 17px 50px 0 #F9D689;
+    background-color: #E0A75E;
+    color: white;
+}
+.image{
+    width: 100px;
+    height: 200px;
+    border: 2px solid #E0A75E;
+    border-radius: 10px;
+    padding: 5px;
+}
+.bEliminar,.bEditar{
+    border-color: #E0A75E;
+    width: 70px;
+    height: 50px;
+    border-radius: 10px;
+    border-width: 1px;
+    background-color: whitesmoke;
+    cursor: grabbing;
+}
+.bEliminar:hover{
+    box-shadow: 0 7px 11px 0 red, 0 10px 43px 0 rgb(196, 56, 56);
+    background-color: lightcoral;
+}
+.bEditar:hover{
+    box-shadow: 0 7px 11px 0 lightblue, 0 10px 43px 0 rgb(61, 61, 197);
+    background-color: aquamarine;
+}
+.iEliminar{
+    height: 30px;
+}
+ul li::marker{
+    color: #D8A25E;
+}
+.Buttons{
+    display: flex;
+}
+.Button1{
+    width: 50%;
+    text-align: center;
+}
+.video{
+    width: 300px;
+    height: 180px;
+    padding: 5px;
+    border-radius: 5px;
+    border: 2px solid #E0A75E;
+    box-shadow: 0 12px 16px 0 #d1ab7c, 0 17px 50px 0 #F9D689;
+}
+::-webkit-scrollbar{
+    width: 15px;
+  }
+  ::-webkit-scrollbar-thumb {
+    background-color: #F5E7B2; 
+    border-radius: 10px;    
+    border: 2px solid  #E0A75E;
+  }
+  ::-webkit-scrollbar-thumb:hover {
+    background-color: white;
+  }
+  #myModal{
+    width: 700px;
+    font-family: 'Times New Roman', Times, serif;
+  }
+  #modal1{
+    background-color: #F5E7B2;
+    border: 2px solid  #E0A75E;
+    border-radius: 10px;
+  }
+  .form{
+    text-align: right;
+  }
