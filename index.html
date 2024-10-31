@@ -123,41 +123,36 @@
       });
     })  
 
-    function sendForm(){
+    async function sendForm(){
+      const title = document.getElementById("title").value;
+      const description = document.getElementById("description").value;
+      const value = document.getElementById("value").value;
+      const images = document.getElementById("image").value;
 
-      const title = document.getElementById("title");
-      const description = document.getElementById("description");
-      const value = document.getElementById("value");
-      const image = document.getElementById("image");
-      const body ={
-        title: title.value,
-        description: description.value,
-        value: value.value,
-        images: [image.value] 
+      try {
+        const response = await fetch("http://localhost:9000/apartments_post", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            title,
+            description,
+            value,
+            images,
+          }),
+        });
+
+        if (!response.ok) {
+          throw new Error("Failed to create apartment");
+        }
+        const result = await response.json();
+        location.reload();
+      } catch (error) {
+        console.error("Error:", error);
+        alert("Error creating apartment");
       }
     }
-
-    fetch("http://localhost:9000/apartments_post")
-      .then((response) => {
-        if (!response.ok) {
-          throw new Error("Failed to fetch apartments");
-        }
-        body: JSON.stringify(body)
-      })
-      .then( response => res.json())
-      .then( response => {
-        console.log(
-          "respuesta de la api", res
-        )
-        title.value = "";
-        description.value = "";
-        value.value = "";
-        image.value = "";
-        location.reload();
-      })
-      .catch((error) => {
-        console.error("Error fetching contacts:", error);
-      });
 
     </script>
 </html>

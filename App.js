@@ -52,27 +52,27 @@ app.post("/apartments_post", async(req, res) => {
   }
 })
 
-app.delete("/users/:id", async (req, res) => {
-  const contact_id = req.params.id; // Get the user ID from the request parameters
+app.delete("/apartment_delete/:id", async (req, res) => {
+  const Apartid = req.params.id; // Get the user ID from the request parameters
 
   try {
       // SQL query to delete the user by ID
       const query = `DELETE FROM contacts WHERE contact_id = ?`; // Adjust the table and column names as necessary
-      const result = await turso.execute(query, [contact_id]);
+      const result = await turso.execute(query, [Apartid]);
       // Check if any rows were affected
       if (result.affectedRows > 0) {
           res.json({
-              mensaje: "Usuario eliminado"
+              mensaje: "Apartment deleted"
           });
       } else {
           res.status(404).json({
-              mensaje: "Usuario no encontrado"
+              mensaje: "No found"
           });
       }
   } catch (error) {
       console.error("Error deleting user:", error);
       res.status(500).json({
-          mensaje: "Error eliminando el usuario",
+          mensaje: "Error",
           error: error.message
       });
   }
