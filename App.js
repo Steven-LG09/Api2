@@ -14,19 +14,40 @@ app.use(cors());
 const {TURSO_DATABASE_URL,TURSO_AUTH_TOKEN} = process.env;
 
 const turso = createClient({
-  url: TURSO_DATABASE_URL,
-  authToken: TURSO_AUTH_TOKEN,
+    url: TURSO_DATABASE_URL,
+    authToken: TURSO_AUTH_TOKEN,
 });
 
-app.get('/', async(req, res) => {
-  const ans2 = await turso.execute(`SELECT * FROM contacts`);
-    console.log(ans2);
-    res.json({ ans2 })
-})
+app.patch("/apartment_update/:id", async (req, res) => {
+  const Apartid1 = req.params.id;
+  const { title, description, value, images } = req.body;
 
+  try {
+      const query = `
+          UPDATE apartments 
+          SET title = ?, description = ?, value = ?, images = ? 
+          WHERE id = ?`;
 
+      const result = await turso.execute(query, [title, description, value, images, Apartid1]);
+
+      if (result.affectedRows > 0) {
+          res.json({
+              mensaje: "Apartment updated"
+          });
+      } else {
+          res.status(404).json({
+              mensaje: "No found"
+          });
+      }
+  } catch (error) {
+      console.error("Error:", error);
+      res.status(500).json({
+          mensaje: "Error updating",
+          error: error.message
+      });
+  }
+});
 app.get("/apartments", async(req, res) => {
-    //"Select * from users"
     const ans = await turso.execute(`SELECT * FROM apartments`);
     console.log(ans);
     res.json( ans.rows )
@@ -41,25 +62,24 @@ app.post("/apartments_post", async(req, res) => {
       args: [title, description, value, images]
     });
     res.json({
-        mensaje: "Usuario creado",
+        mensaje: "New Apartment",
         usuario: ans
     });
   } catch (error) {
     console.log(error);
     res.status(404).json({
-      mensaje: "Error al crear el usuario"
+      mensaje: "Error"
     });
   }
 })
 
 app.delete("/apartment_delete/:id", async (req, res) => {
-  const Apartid = req.params.id; // Get the user ID from the request parameters
+  const Apartid = req.params.id;
 
   try {
-      // SQL query to delete the user by ID
-      const query = `DELETE FROM contacts WHERE contact_id = ?`; // Adjust the table and column names as necessary
+      const query = `DELETE FROM apartments WHERE id = ?`;
       const result = await turso.execute(query, [Apartid]);
-      // Check if any rows were affected
+
       if (result.affectedRows > 0) {
           res.json({
               mensaje: "Apartment deleted"
@@ -106,37 +126,6 @@ app.get("/users/:id", async (req, res) => {
 
 // // todo: Actualizar un usuario por id
 
-app.put("/users/:id", async (req, res) => {
-  const userId = req.params.id; // Get the user ID from the request parameters
-  const { first_name, last_name, email, phone } = req.body; // Get the updated user data from the request body
-
-  try {
-      // SQL query to update the user by ID
-      const query = `
-          UPDATE contacts 
-          SET first_name = ?, last_name = ?, email = ?, phone = ? 
-          WHERE contact_id = ?`;
-
-      const result = await turso.execute(query, [first_name, last_name, email, phone, userId]);
-
-      // Check if any rows were affected
-      if (result.affectedRows > 0) {
-          res.json({
-              mensaje: "Usuario actualizado"
-          });
-      } else {
-          res.status(404).json({
-              mensaje: "Usuario no encontrado"
-          });
-      }
-  } catch (error) {
-      console.error("Error updating user:", error);
-      res.status(500).json({
-          mensaje: "Error actualizando el usuario",
-          error: error.message
-      });
-  }
-});
 
 app.listen(port, () => {
   console.log(`Example app listening on port http://localhost:${port}`)

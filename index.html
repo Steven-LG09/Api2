@@ -78,7 +78,6 @@
         integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
         crossorigin="anonymous"></script>
     <script>
-      // Fetch contacts from the backend and render them in the list
       fetch("http://localhost:9000/apartments")
       .then((response) => {
       if (!response.ok) {
@@ -102,7 +101,7 @@
                   <p class="card-text">$ ${product.value}</p>
                   <div class="Buttons">
                     <div class="Button1">
-                      <Button class="bEditar" onclick="editPost(${product.id},${product.value},'${product.title}','${product.description},'${product.images}')">
+                      <Button class="bEditar" onclick="editPost(${product.id},${product.value},'${product.title}','${product.description}','${product.images}')">
                         <img src="pen.png" class="iEliminar"/>
                       </Button>
                     </div>
@@ -153,6 +152,88 @@
         alert("Error creating apartment");
       }
     }
+
+    async function deletePost(id){
+      try {
+        const response = await fetch(`http://localhost:9000/apartment_delete/${id}`, {
+          method: "DELETE",
+          headers: {
+            "Content-Type": "application/json",
+          },
+        });
+
+        if (!response.ok) {
+          throw new Error("Failed to delete apartment");
+        }
+        const result = await response.json();
+      } catch (error) {
+        console.error("Error:", error);
+        location.reload();
+      }
+    }
+
+    function editPost(id,value,title,description,images){
+      var modal = document.getElementById("myModal");
+
+      var span = document.getElementsByClassName("close")[0];
+
+      var updateForm = document.getElementById("update");
+
+      let titulo = document.getElementById("title1");
+      let descripcion = document.getElementById("description1");
+      const precio = document.getElementById("value1");
+      let imagen = document.getElementById("image1");
+
+      titulo.value = `${title}`
+      descripcion.value = `${description}`
+      precio.value = `${value}`
+      imagen.value = `${images}`
+
+      modal.style.display= "block";
+
+      span.onclick = function() {
+        modal.style.display = "none";
+      }
+        
+      window.onclick = function(event) {
+        if (event.target == modal) {
+          modal.style.display = "none";
+        }
+      }
+
+      updateForm.onclick = async function(){
+        const title = document.getElementById("title1");
+        const description = document.getElementById("description1");
+        const value = document.getElementById("value1");
+        const image = document.getElementById("image1");
+        const body ={
+          title: title.value,
+          description: description.value,
+          value: value.value,
+          images: image.value 
+        }
+
+        try {
+        const response = await fetch(`http://localhost:9000/apartment_update/${id}`, {
+          method: "PATCH",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(body)
+        });
+
+        if (!response.ok) {
+          throw new Error("Failed to update apartment");
+        }
+        const result = await response.json();
+      } catch (error) {
+        location.reload();
+        console.error("Error:", error);
+        throw new Error("Failed to update apartment");
+      } 
+    } 
+  }
+    
 
     </script>
 </html>
