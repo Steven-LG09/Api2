@@ -18,35 +18,6 @@ const turso = createClient({
     authToken: TURSO_AUTH_TOKEN,
 });
 
-app.patch("/apartment_update/:id", async (req, res) => {
-  const Apartid1 = req.params.id;
-  const { title, description, value, images } = req.body;
-
-  try {
-      const query = `
-          UPDATE apartments 
-          SET title = ?, description = ?, value = ?, images = ? 
-          WHERE id = ?`;
-
-      const result = await turso.execute(query, [title, description, value, images, Apartid1]);
-
-      if (result.affectedRows > 0) {
-          res.json({
-              mensaje: "Apartment updated"
-          });
-      } else {
-          res.status(404).json({
-              mensaje: "No found"
-          });
-      }
-  } catch (error) {
-      console.error("Error:", error);
-      res.status(500).json({
-          mensaje: "Error updating",
-          error: error.message
-      });
-  }
-});
 app.get("/apartments", async(req, res) => {
     const ans = await turso.execute(`SELECT * FROM apartments`);
     console.log(ans);
@@ -55,7 +26,7 @@ app.get("/apartments", async(req, res) => {
 
 app.post("/apartments_post", async(req, res) => {
   const {title, description, value, images} = req.body;
-
+  
   try {
     const ans = await turso.execute({
       sql: `INSERT INTO apartments ( title, description, value, images) VALUES (?, ?, ?, ?)`,
@@ -98,18 +69,16 @@ app.delete("/apartment_delete/:id", async (req, res) => {
   }
 });
 
-// //todo: obtener un usuario por id
 
 app.get("/users/:id", async (req, res) => {
-  const contact_id = req.params.id; // Get the user ID from the request parameters
+  const contact_id = req.params.id; 
 
   try {
-      // SQL query to select the user by ID
-      const query = `SELECT * FROM contacts WHERE contact_id = ?`; // Adjust the table and column names as necessary
+      const query = `SELECT * FROM contacts WHERE contact_id = ?`; 
       const result = await turso.execute(query, [contact_id]);
-      // Check if the user was found
+
       if (result.rows.length > 0) {
-          res.json(result.rows[0]); // Return the first user found
+          res.json(result.rows[0]); 
       } else {
           res.status(404).json({
               mensaje: "Usuario no encontrado"
@@ -120,11 +89,39 @@ app.get("/users/:id", async (req, res) => {
       res.status(500).json({
           mensaje: "Error obteniendo el usuario",
           error: error.message
-      });
+        });
   }
 });
 
-// // todo: Actualizar un usuario por id
+app.patch("/apartment_update/:id", async (req, res) => {
+  const Apartid1 = req.params.id;
+  const { title, description, value, images } = req.body;
+
+  try {
+      const query = `
+          UPDATE apartments 
+          SET title = ?, description = ?, value = ?, images = ? 
+          WHERE id = ?`;
+
+      const result = await turso.execute(query, [title, description, value, images, Apartid1]);
+
+      if (result.affectedRows > 0) {
+          res.json({
+              mensaje: "Apartment updated"
+          });
+      } else {
+          res.status(404).json({
+              mensaje: "No found"
+          });
+      }
+  } catch (error) {
+      console.error("Error:", error);
+      res.status(500).json({
+          mensaje: "Error updating",
+          error: error.message
+      });
+  }
+});
 
 
 app.listen(port, () => {

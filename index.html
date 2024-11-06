@@ -117,9 +117,6 @@
             il.innerHTML =  myhtml;
             list.appendChild(il); 
           })
-      .catch((error) => {
-      console.error("Error fetching apartments:", error);
-      });
     })  
 
     async function sendForm(){
@@ -128,48 +125,40 @@
       const value = document.getElementById("value").value;
       const images = document.getElementById("image").value;
 
-      try {
-        const response = await fetch("http://localhost:9000/apartments_post", {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({
-            title,
-            description,
-            value,
-            images,
-          }),
-        });
+ 
+      const response = await fetch("http://localhost:9000/apartments_post", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          title,
+          description,
+          value,
+          images,
+        }),
+      });
 
-        if (!response.ok) {
-          throw new Error("Failed to create apartment");
-        }
-        const result = await response.json();
-        location.reload();
-      } catch (error) {
-        console.error("Error:", error);
-        alert("Error creating apartment");
+      if (!response.ok) {
+        throw new Error("Failed to create apartment");
       }
+      const result = await response.json();
+      location.reload();
+
     }
 
     async function deletePost(id){
-      try {
-        const response = await fetch(`http://localhost:9000/apartment_delete/${id}`, {
-          method: "DELETE",
-          headers: {
-            "Content-Type": "application/json",
-          },
-        });
-
-        if (!response.ok) {
-          throw new Error("Failed to delete apartment");
-        }
-        const result = await response.json();
-      } catch (error) {
-        console.error("Error:", error);
+      const response = await fetch(`http://localhost:9000/apartment_delete/${id}`, {
+        method: "DELETE",
+        headers: {
+          "Content-Type": "application/json",
+        },
+      })
+      .then( response => response.json())
+      .then( response => {
+        console.log("respuesta de la api", response)
         location.reload();
-      }
+      })
     }
 
     function editPost(id,value,title,description,images){
@@ -213,24 +202,18 @@
           images: image.value 
         }
 
-        try {
         const response = await fetch(`http://localhost:9000/apartment_update/${id}`, {
           method: "PATCH",
           headers: {
             "Content-Type": "application/json",
           },
           body: JSON.stringify(body)
-        });
-
-        if (!response.ok) {
-          throw new Error("Failed to update apartment");
-        }
-        const result = await response.json();
-      } catch (error) {
-        location.reload();
-        console.error("Error:", error);
-        throw new Error("Failed to update apartment");
-      } 
+        })
+        .then( response => response.json())
+        .then( response => {
+          console.log("respuesta de la api", response)
+          location.reload();
+        })
     } 
   }
     
